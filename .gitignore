@@ -1,0 +1,12 @@
+.vscode/
+bin/
+obj/
+logs/
+*.user
+*.suo
+*.cache
+*.vs/
+.DS_Store
+src/**/bin/
+src/**/obj/
+.client/node_modules/
