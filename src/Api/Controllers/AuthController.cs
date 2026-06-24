@@ -29,5 +29,16 @@ namespace TicketManagementSystem.Api.Controllers
             if (!result.Success) return BadRequest(result);
             return Ok(result);
         }
+
+        [HttpPost("refresh")]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestDto model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.RefreshToken))
+                return BadRequest(new { success = false, message = "Refresh token is required." });
+
+            var result = await _authService.RefreshAsync(model.RefreshToken);
+            if (!result.Success) return BadRequest(result);
+            return Ok(result);
+        }
     }
 }
