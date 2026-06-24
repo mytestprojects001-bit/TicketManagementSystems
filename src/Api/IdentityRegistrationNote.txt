@@ -1,0 +1,11 @@
+using System;
+using System.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using TicketManagementSystem.Application.Services;
+using TicketManagementSystem.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
+
+// In Program.cs we will register Identity services using these stores
