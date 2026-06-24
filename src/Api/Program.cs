@@ -63,6 +63,9 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
+// Seed admin user and roles
+await SeedData.InitializeAsync(app);
+
 // Middleware
 app.UseMiddleware<ExceptionMiddleware>();
 

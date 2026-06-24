@@ -1,16 +1,9 @@
-# Angular client skeleton
+# Client README
 
-This directory will contain the Angular 16 client application.
+This is the Angular 16 client skeleton. The client will be expanded with AdminLTE theme, authentication, dashboard, bookings, reports and other modules.
 
-Planned structure:
-- client/
-  - src/
-    - app/
-      - auth/
-      - dashboard/
-      - bookings/
-      - shared/
-  - angular.json
-  - package.json
+To run:
 
-I will scaffold the Angular app in the next commits with AdminLTE integration, authentication, seat selection UI and report pages.
+1. cd client
+2. npm install
+3. ng serve --open
