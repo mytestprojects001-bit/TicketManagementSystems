@@ -2,9 +2,11 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using Serilog.Sinks.MSSqlServer;
 using TicketManagementSystem.Api.Middleware;
 using TicketManagementSystem.Infrastructure;
 using TicketManagementSystem.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,10 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
 // Serilog
+var logConnection = configuration.GetConnectionString("DefaultConnection");
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(configuration)
     .Enrich.FromLogContext()
     .WriteTo.File("logs/log-.txt", rollingInterval: Serilog.RollingInterval.Day)
+    .WriteTo.MSSqlServer(logConnection, sinkOptions: new MSSqlServerSinkOptions { TableName = "SerilogLogs", AutoCreateSqlTable = false })
     .CreateLogger();
 
 builder.Host.UseSerilog();
@@ -25,12 +29,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// DbConnectionFactory
-builder.Services.AddSingleton<IDbConnectionFactory, DbConnectionFactory>();
+// Register application services and infra
+builder.Services.AddApplicationServices(configuration);
 
-// Application services
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IBookingService, BookingService>();
+// Register report repository and service
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 // Authentication JWT
 var jwtSection = configuration.GetSection("Jwt");
